@@ -16,7 +16,7 @@ p2 = Person.new(@name)
 
 puts "Okay! Let's Begin!"
 
-while @repl_bool = true
+while @repl_bool
   question = Question.new
 
   case @turn
@@ -26,28 +26,42 @@ while @repl_bool = true
     puts "Your turn #{p2.name}"
   end
 
-puts question.string_question
-@answer = gets.chomp.to_i
+  puts question.string_question
+  @answer = gets.chomp.to_i
 
-if @turn == 0 && question.correct?(@answer)
-  puts "CORRECT!"
-  p1.gain
-  @turn += 1
-elsif @turn == 0 && !question.correct?(@answer)
-  puts "WRONG!"
-  p1.loss
-  @turn += 1
-elsif @turn == 1 && question.correct?(@answer)
-  puts "CORRECT!"
-  p2.gain
-  @turn -= 1
-elsif @turn == 1 && !question.correct?(@answer)
-  puts "WRONG!"
-  p2.loss
-  @turn -= 1
-end
+  if @turn == 0 && question.correct?(@answer)
+    puts "CORRECT!"
+    p1.gain
+    @turn += 1
+  elsif @turn == 0 && !question.correct?(@answer)
+    puts "WRONG!"
+    p1.loss
+    @turn += 1
+  elsif @turn == 1 && question.correct?(@answer)
+    puts "CORRECT!"
+    p2.gain
+    @turn -= 1
+  elsif @turn == 1 && !question.correct?(@answer)
+    puts "WRONG!"
+    p2.loss
+    @turn -= 1
+  end
 
-puts "The score so far:
-#{p1.name}: #{p1.correct_answers} CORRECT ANSWERS #{p1.lives} REMAINING LIVES 
-#{p2.name}: #{p2.correct_answers} CORRECT ANSWERS #{p2.lives} REMAINING LIVES"
+  puts "The score so far:
+  #{p1.name}: #{p1.correct_answers} CORRECT ANSWERS #{p1.lives} REMAINING LIVES 
+  #{p2.name}: #{p2.correct_answers} CORRECT ANSWERS #{p2.lives} REMAINING LIVES"
+
+  if p1.lives < 1 || p2.lives <1
+    puts "Game OVER."
+    if p1.lives < 1
+      puts "The winner is #{p2.name}"
+    elsif p2.lives < 1
+      puts "The winner is #{p1.name}"
+    end
+
+    puts "The final score was:
+        #{p1.name}: #{p1.correct_answers} CORRECT ANSWERS #{p1.lives} REMAINING LIVES 
+        #{p2.name}: #{p2.correct_answers} CORRECT ANSWERS #{p2.lives} REMAINING LIVES"
+    @repl_bool = false
+  end
 end
